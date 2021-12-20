@@ -76,6 +76,7 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 #This should be done before worker nodes are joined.
 sudo kubectl apply -f https://docs.projectcalico.org/v3.14/manifests/calico.yaml
 
+## this part do finally after setting up the worker-nodes
 sudo kubectl label node worker2 node-role.kubernetes.io/worker=worker
 ```
 
