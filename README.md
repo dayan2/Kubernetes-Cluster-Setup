@@ -73,11 +73,35 @@ mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
-#This should be done before worker nodes are joined.
-sudo kubectl apply -f https://docs.projectcalico.org/v3.14/manifests/calico.yaml
+# https://thenewstack.io/install-calico-to-enhance-kubernetes-built-in-networking-capability/
+curl https://docs.projectcalico.org/manifests/calico-typha.yaml -o calico.yaml
+
+kubectl apply -f calico.yaml
 
 ## this part do finally after setting up the worker-nodes
 sudo kubectl label node worker2 node-role.kubernetes.io/worker=worker
+
+curl -o calicoctl -O -L "https://github.com/projectcalico/calicoctl/releases/download/v3.19.1/calicoctl"
+
+sudo mv calicoctl /usr/local/bin/
+sudo chmod +x /usr/local/bin/calicoctl
+
+# Verify the installation by running the command:
+calicoctl -h
+
+# Install the Tigera Calico operator with the command:
+kubectl create -f https://docs.projectcalico.org/manifests/tigera-operator.yaml
+wget https://docs.projectcalico.org/manifests/custom-resources.yaml
+
+# Open that file and check for any necessary customizations you might want with the command: (I changed network-cidr=10.244.0.0/16)
+nano custom-resources.yaml
+
+# After you’ve customized the YAML, save and close the file and apply it with the command:
+kubectl create -f custom-resources.yaml
+
+# When all of the pods have a status of Running, you’ll need to remove the taints on the master with the command:
+kubectl taint nodes --all node-role.kubernetes.io/master-
+
 ```
 
 ### WORKER NODE
