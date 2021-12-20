@@ -66,6 +66,7 @@ sudo sed -i -e '/swap/d' /etc/fstab
 
 systemctl status kubelet
 
+# Add you VM Ip-address to apiserver-advertise-address
 sudo kubeadm init --pod-network-cidr=10.244.0.0/16 --apiserver-advertise-address=172.31.4.124
 
 mkdir -p $HOME/.kube
