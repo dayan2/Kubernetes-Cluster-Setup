@@ -102,6 +102,20 @@ kubectl create -f custom-resources.yaml
 # When all of the pods have a status of Running, you’ll need to remove the taints on the master with the command:
 kubectl taint nodes --all node-role.kubernetes.io/master-
 
+#### install NGINX Ingress
+curl https://baltocdn.com/helm/signing.asc | sudo apt-key add -
+sudo apt-get install apt-transport-https --yes
+echo "deb https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
+sudo apt-get update
+sudo apt-get install helm
+
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+helm repo update ingress-nginx
+helm install --set controller.watchIngressWithoutClass=true --namespace ingress-nginx --create-namespace ingress-nginx ingress-nginx/ingress-nginx
+
+# check the status of nginx
+helm list -n ingress-nginx
+
 ```
 
 ### WORKER NODE
