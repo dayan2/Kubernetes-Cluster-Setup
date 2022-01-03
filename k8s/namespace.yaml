@@ -1,0 +1,15 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: my-namespace
+  labels:
+    name: my-namespace
+
+---
+
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: rabbit
+  labels:
+    name: rabbit

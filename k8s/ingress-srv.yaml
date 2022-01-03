@@ -1,0 +1,54 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-app-srv
+  namespace: my-namespace
+  annotations:
+    #kubernetes.io/ingress.class: alb
+    #alb.ingress.kubernetes.io/scheme: internet-facing
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    ssl-redirect: "false"
+spec:
+  ingressClassName: nginx
+  rules:
+  - http:
+      paths:      
+      - path: /server/(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: message-server-clusterip-srv
+            port:
+              number: 80
+      - path: /client/(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: message-client-clusterip-srv
+            port:
+              number: 80
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-rabbit-srv
+  namespace: rabbit
+  annotations:
+    #kubernetes.io/ingress.class: alb
+    #alb.ingress.kubernetes.io/scheme: internet-facing
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    ssl-redirect: "false"
+spec:
+  ingressClassName: nginx
+  rules:
+  - http:
+      paths:      
+      - path: /(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: rabbitmq-clusterip-srv
+            port:
+              number: 15672
