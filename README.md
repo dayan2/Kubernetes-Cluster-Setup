@@ -1,4 +1,11 @@
 # Kubernetes Environment Setup
+
+* SSH copy folder to VM.
+
+```bash
+scp -i ./k8s/rabbit-masstransit.pem -r ./k8s dayan@20.41.226.214:/home/dayan
+```
+
 ## _Multi-node - Cluster_
 
 ### MASTER NODE
