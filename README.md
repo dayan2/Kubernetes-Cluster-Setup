@@ -334,6 +334,10 @@ kubectl taint nodes --all node-role.kubernetes.io/master-
 
 kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
 
+* Mot sure whether this is needed if the node is not ready after above line, enter the following line too
+kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/k8s-manifests/kube-flannel-rbac.yml
+
+* Following line are not necessary so you can ignore...
 # Add openebs repo to helm
 helm repo add openebs https://openebs.github.io/charts
 
